@@ -1,0 +1,25 @@
+[
+  {
+    "date": "20261113",
+    "checked_utc": "2026-11-15T09:55:18.026764+00:00",
+    "status": "OK",
+    "product": "EURUSD",
+    "expiration": "Z26",
+    "reporttype": "P",
+    "http": 200,
+    "sha256": "a14abd37edc13c7aaec0aeff0ad8bea89ffb850584b9a7389c18e137a843591f",
+    "groups": {
+      "Call": {
+        "strikes": 59,
+        "oi": 68378,
+        "volume": 1546
+      },
+      "Put": {
+        "strikes": 65,
+        "oi": 70135,
+        "volume": 8542
+      }
+    },
+    "request_url": "https://www.cmegroup.com/CmeWS/mvc/Volume/Options/Details?productid=8116&tradedate=20261113&expirationcode=Z26&reporttype=P"
+  }
+]
