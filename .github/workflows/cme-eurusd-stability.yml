@@ -1,0 +1,64 @@
+name: CME EURUSD – JSON-Stabilitätstest
+
+on:
+  push:
+    paths:
+      - '.github/workflows/cme-eurusd-stability.yml'
+  workflow_dispatch:
+    inputs:
+      trade_date:
+        description: 'Optionaler CME-Handelstag YYYYMMDD (leer = vorheriger Werktag)'
+        type: string
+        required: false
+  schedule:
+    - cron: '17 20 * * 1-5'
+      timezone: 'Europe/Berlin'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: cme-eurusd-stability
+  cancel-in-progress: false
+
+jobs:
+  cme-json:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Repository auschecken
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Python installieren
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Parser-Selbsttests
+        run: python cme_stability/check.py --selftest
+      - name: CME-Webdaten genau einmal abrufen und prüfen
+        env:
+          CME_TRADE_DATE: ${{ inputs.trade_date }}
+        run: |
+          if [ -n "$CME_TRADE_DATE" ]; then
+            python cme_stability/check.py --date "$CME_TRADE_DATE"
+          else
+            python cme_stability/check.py
+          fi
+      - name: Nur Prüfstatus und Summen protokollieren
+        run: |
+          if [ -f cme_stability/history.json ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add cme_stability/history.json cme_stability/summary.json
+            if ! git diff --cached --quiet; then
+              git commit -m "chore(cme): EURUSD JSON connection audit [skip ci]"
+              git push
+            fi
+          fi
+      - name: Fehler im Actions-Status kenntlich machen
+        run: |
+          if [ -f cme_stability/run_status.tmp ] && [ "$(cat cme_stability/run_status.tmp)" = "ERROR" ]; then
+            echo "CME-Abruf fehlgeschlagen, Details in cme_stability/history.json" >&2
+            exit 1
+          fi
