@@ -21,5 +21,14 @@
       }
     },
     "request_url": "https://www.cmegroup.com/CmeWS/mvc/Volume/Options/Details?productid=8116&tradedate=20261113&expirationcode=Z26&reporttype=P"
+  },
+  {
+    "date": "20261116",
+    "checked_utc": "2026-11-17T02:28:46.005889+00:00",
+    "status": "ERROR",
+    "product": "EURUSD",
+    "expiration": "Z26",
+    "reporttype": "P",
+    "error": "ValueError: falsche oder leere Monats-/Call-Put-Gruppen"
   }
 ]
