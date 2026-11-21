@@ -57,5 +57,14 @@
     "expiration": "Z26",
     "reporttype": "P",
     "error": "ValueError: falsche oder leere Monats-/Call-Put-Gruppen"
+  },
+  {
+    "date": "20261120",
+    "checked_utc": "2026-11-21T00:47:36.232622+00:00",
+    "status": "ERROR",
+    "product": "EURUSD",
+    "expiration": "Z26",
+    "reporttype": "P",
+    "error": "ValueError: falsche oder leere Monats-/Call-Put-Gruppen"
   }
 ]
